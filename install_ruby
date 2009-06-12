@@ -21,6 +21,12 @@ else
 	GET="wget"
 fi
 
+if which gmake > /dev/null; then
+	make=gmake
+else
+	make=make
+fi
+
 VERSION=$1
 RUBY="$PREFIX/$VERSION/bin/ruby"
 GEM=$PREFIX/$VERSION/bin/gem
@@ -55,7 +61,7 @@ cd src
 load_branch $BRANCH
 autoconf
 ./configure --enable-pthread --enable-shared --prefix=$PREFIX/$VERSION
-make && make install
+$make && $make install
 load_branch master
 
 if ! $RUBY -rubygems 2> /dev/null; then
