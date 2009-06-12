@@ -7,7 +7,7 @@ case $1 in
 		done
 		;;
 	*)
-		if [ $@ = "server" ]; then
+		if [ "$@" = "server" ] 2>/dev/null ; then
 			gem server --daemon
 		else
 		  PATH=$RUBY_PATH/$RUBY_VERSION/bin:$PATH exec $RUBY_PATH/$RUBY_VERSION/bin/gem $@
