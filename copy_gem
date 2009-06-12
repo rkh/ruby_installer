@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ -z $1 ]; then
+	echo "Usage: $0 FROM_VERSION [TO_VERSION]"
+	exit 1
+fi
+
+for gem in `RUBY_VERSION=$1 ruby -S gem list --local --no-versions`; do
+	if [ -z $2 ]; then
+		RUBY_VERSION=$2 -S gem install $gem
+	else
+		gem install $gem
+	fi
+done
