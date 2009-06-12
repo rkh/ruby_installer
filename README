@@ -1,0 +1,16 @@
+Make sure you add this to your $PATH.
+
+I usually place this in /opt/ruby/bin and recommend you to do so, too.
+Or at least inside $RUBY_PREFIX/bin.
+Should work otherwise, but I never tested that (and don't plan to)
+
+You need to set those values in your .bashrc or somewhere:
+
+RUBY_PATH (mine is /opt/ruby)
+RUBY_VERSION (default ruby version, mine is 1.8.7)
+
+Usage:
+
+  install_ruby 1.8.7
+  every_ruby -v
+  gem install rails
