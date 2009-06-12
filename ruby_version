@@ -1,6 +1,0 @@
-#!/bin/bash
-if [ -z $1 ]; then
-  echo $RUBY_VERSION
-else
-  RUBY_VERSION=$1
-fi
