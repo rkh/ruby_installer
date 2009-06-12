@@ -74,3 +74,5 @@ fi
 
 $GEM update --system
 $GEM install rake
+
+add_ruby_command ruby
