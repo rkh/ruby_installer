@@ -6,4 +6,3 @@ cat > $RUBY_PATH/bin/$1 <<EOS
 PATH=\$RUBY_PATH/\$RUBY_VERSION/bin:\$PATH exec \$RUBY_PATH/\$RUBY_VERSION/bin/$1 \$@
 EOS
 chmod +x $RUBY_PATH/bin/$1
-echo $1 >> $RUBY_PATH/bin/.gitignore
