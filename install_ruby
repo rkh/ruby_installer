@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# Usage: install_ruby VERSION
+#
+#	VERSION should be something like 1.8.7 or 1.9.2dev
+# it will also install rubygems and rake
+#
+# To update, simply run again.
+
+if [ -z $PREFIX ]; then
+	PREFIX=/opt/ruby
+fi
+
+if [ -z $GEM_VERSION ]; then
+	GEM_VERSION=1.3.4
+fi
+
+if which curl > /dev/null; then
+	GET="curl -O"
+else
+	GET="wget"
+fi
+
+VERSION=$1
+RUBY="$PREFIX/$VERSION/bin/ruby"
+GEM=$PREFIX/$VERSION/bin/gem
+
+case $VERSION in
+	1.8.5|1.8.6|1.8.7|1.9.1) BRANCH=`echo $VERSION | sed -e 's/^1\.\([8..9]\)\.\(.\)$/ruby_1_\1_\2/'`;;
+	1.8.8dev) BRANCH="ruby_1_8";;
+	1.9.2dev) BRANCH="trunk";;
+	*) echo "unknown version." && exit 1;;
+esac
+
+load_branch() { 
+	git reset --hard HEAD
+	git clean -f -x -d
+	git checkout -b $1 origin/$1 2>/dev/null || git checkout $1
+	git pull origin $1
+}
+
+if [ ! -d $PREFIX ]; then
+	sudo mkdir -p $PREFIX
+	sudo chown $USER $PREFIX
+fi
+cd $PREFIX
+
+mkdir -p $VERSION
+
+if [ ! -d src ]; then
+	git clone git://github.com/rubyspec/matzruby.git src
+fi
+cd src
+
+load_branch $BRANCH
+autoconf
+./configure --enable-pthread --enable-shared --prefix=$PREFIX/$VERSION
+make && make install
+load_branch master
+
+if ! $RUBY -rubygems 2> /dev/null; then
+	cd $PREFIX
+	mkdir -p rubygems
+	cd rubygems
+	if [ ! -d rubygems-$GEM_VERSION ]; then
+		if [ ! -f rubygems-$GEM_VERSION.tgz ]; then
+			$GET http://files.rubyforge.mmmultiworks.com/rubygems/rubygems-$GEM_VERSION.tgz
+		fi
+		tar zxvf rubygems-$GEM_VERSION.tgz
+	fi
+	cd rubygems-$GEM_VERSION
+	RUBYOPT="" $RUBY setup.rb
+fi
+
+$GEM update --system
+$GEM install rake

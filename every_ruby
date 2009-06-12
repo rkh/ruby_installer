@@ -1,0 +1,7 @@
+#!/bin/bash
+NORMAL_PATH=$PATH
+for r in /opt/ruby/*/bin/ruby; do
+	echo -e "\033[33;1m${r} $@\033[0m"
+  PATH=`dirname ${r}`:$NORMAL_PATH ${r} ${@}
+  echo
+done

@@ -1,0 +1,13 @@
+#!/bin/bash
+case $1 in
+	check|cleanup|install|pristine|rdoc|uninstall|update|which)	exec every_ruby -S gem $@;;
+	*)
+		if [ $@ = "server" ]; then
+			RUBY_VERSION=1.8.6 gem server --daemon --port 8186
+			RUBY_VERSION=1.8.7 gem server --daemon --port 8187
+			RUBY_VERSION=1.9.1 gem server --daemon --port 8191
+		else
+		  PATH=$RUBY_PATH/$RUBY_VERSION/bin:$PATH exec $RUBY_PATH/$RUBY_VERSION/bin/gem $@
+		fi
+		;;
+esac
