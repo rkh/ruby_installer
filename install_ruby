@@ -7,6 +7,14 @@
 #
 # To update, simply run again.
 
+function usage() {
+        echo "$0 VERSION"
+}
+
+if [ $# -ne 1 ]; then
+        usage
+fi
+
 if [ -z $PREFIX ]; then
 	PREFIX=/opt/ruby
 fi
@@ -62,7 +70,6 @@ load_branch $BRANCH
 autoconf
 ./configure --enable-pthread --enable-shared --prefix=$PREFIX/$VERSION
 $make && $make install
-load_branch master
 
 if ! $RUBY -rubygems 2> /dev/null; then
 	cd $PREFIX
