@@ -80,7 +80,9 @@ if ! $RUBY -rubygems 2> /dev/null; then
 			$GET http://files.rubyforge.mmmultiworks.com/rubygems/rubygems-$GEM_VERSION.tgz
 		fi
 		#tar zxvf rubygems-$GEM_VERSION.tgz
-		gunzip -c rubygems-$GEM_VERSION.tgz | tar x
+		mv rubygems-$GEM_VERSION.tgz rubygems-$GEM_VERSION.tar.gz
+		gunzip -c rubygems-$GEM_VERSION.tar.gz
+		tar xvf rubygems-$GEM_VERSION.tar
 	fi
 	cd rubygems-$GEM_VERSION
 	RUBYOPT="" $RUBY setup.rb
