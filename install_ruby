@@ -23,10 +23,10 @@ if [ -z $GEM_VERSION ]; then
 	GEM_VERSION=1.3.4
 fi
 
-if which curl > /dev/null; then
-	GET="curl -O"
-else
+if which wget > /dev/null; then
 	GET="wget"
+else
+	GET="curl -O"
 fi
 
 if which gmake > /dev/null; then
